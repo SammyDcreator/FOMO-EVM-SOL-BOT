@@ -1,10 +1,14 @@
 import logging
 import asyncio
+import os
+import sys
 from telegram import Update
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler, MessageHandler,
     ContextTypes, filters
 )
+# Add project root to path so handlers/keyboards/models/services can be imported
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from config.settings import config
 from services.notifications import notification_service
 from handlers.welcome import (
