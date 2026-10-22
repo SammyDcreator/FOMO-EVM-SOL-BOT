@@ -1,8 +1,6 @@
-# Minimal requirements for Ultra Advance Trading Bot
-# Railway will install these automatically
-
-python-telegram-bot
-ecdsa>=0.19
-pycryptodome>=3.24
-# Optional: SOLana support
-solana>=0.30  # if using SOL wallet features
+python-telegram-bot==21.6
+solders==0.20.0
+aiohttp==3.9.1
+cryptography==42.0.0
+python-dotenv==1.0.0
+mnemonic==0.20
