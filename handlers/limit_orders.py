@@ -265,3 +265,28 @@ async def handle_limit_price_input(update: Update, context: ContextTypes.DEFAULT
                 parse_mode="HTML"
             )
     return False
+
+
+async def handle_limit_amount_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.text and update.message.text.startswith("/"):
+        command = update.message.text.split()[0].lower()
+        if command == "/setlimitamount":
+            args = update.message.text.split()[1:]
+            if len(args) >= 1:
+                amount = float(args[0])
+                await update.message.reply_text(
+                    f"✅ <b>Limit Amount Set</b>\n\n"
+                    f"Amount: {amount:.6f} SOL",
+                    parse_mode="HTML"
+                )
+            else:
+                await update.message.reply_text(
+                    "❌ Usage: /setlimitamount <amount>",
+                    parse_mode="HTML"
+                )
+        else:
+            await update.message.reply_text(
+                "Unknown command. Use /setlimitamount <amount>",
+                parse_mode="HTML"
+            )
+    return False
