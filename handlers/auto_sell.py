@@ -4,10 +4,6 @@ from telegram import Update, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from services.notifications import notification_service
 from models.database import db, AutoSellRule
-from keyboards.menus import (
-    get_auto_sell_keyboard,
-    get_auto_sell_type_keyboard,
-)
 
 
 logger = logging.getLogger(__name__)
@@ -168,3 +164,31 @@ async def autosell_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     context.user_data.pop("awaiting_rule", None)
     await auto_sell_menu(update, context)
+
+
+async def handle_autosell_percent(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.text and update.message.text.startswith("/"):
+        command = update.message.text.split()[0].lower()
+        if command == "/setautosellpercent":
+            args = update.message.text.split()[1:]
+            if len(args) >= 2:
+                rule_id = int(args[0])
+                percent = float(args[1])
+                # Logic to update auto sell rule percent
+                await update.message.reply_text(
+                    f"✅ <b>Auto Sell Percent Updated</b>\n\n"
+                    f"Rule ID: {rule_id}\n"
+                    f"New Percent: {percent}%",
+                    parse_mode="HTML"
+                )
+            else:
+                await update.message.reply_text(
+                    "❌ Usage: /setautosellpercent <rule_id> <percent>",
+                    parse_mode="HTML"
+                )
+        else:
+            await update.message.reply_text(
+                "Unknown command. Use /setautosellpercent <rule_id> <percent>",
+                parse_mode="HTML"
+            )
+    return False
