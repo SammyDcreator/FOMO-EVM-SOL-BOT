@@ -571,3 +571,18 @@ async def positions_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def positions_refresh(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await positions_menu(update, context)
+
+
+async def sell_by_address(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    context.user_data["awaiting_token_address"] = True
+    context.user_data["trade_action"] = "sell"
+    
+    await query.edit_message_text(
+        "🎯 <b>Sell by Token Address</b>\n\n"
+        "Send the token contract address you want to sell.",
+        reply_markup=get_confirm_keyboard("sell", "buy_cancel", "menu_sell"),
+        parse_mode="HTML"
+    )
