@@ -192,3 +192,26 @@ async def handle_autosell_percent(update: Update, context: ContextTypes.DEFAULT_
                 parse_mode="HTML"
             )
     return False
+
+
+async def autosell_remove(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    rule_id = int(query.data.replace("autosell_remove_", ""))
+    from models.database import db, AutoSellRule
+    rule = db.get_auto_sell_rule(rule_id)
+    
+    if not rule:
+        await query.edit_message_text("❌ Rule not found", reply_markup=get_auto_sell_keyboard(False), parse_mode="HTML")
+        return
+    
+    # Remove the auto sell rule
+    from models.database import db as db2
+    db2.remove_auto_sell_rule(rule_id)
+    
+    await query.edit_message_text(
+        "✅ <b>Auto Sell Rule Removed</b>\n\n"
+        f"Rule: {rule.rule_type} on {rule.token_symbol} has been removed.",
+        parse_mode="HTML"
+    )
