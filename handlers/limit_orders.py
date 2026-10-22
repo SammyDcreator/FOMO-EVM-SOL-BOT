@@ -237,3 +237,31 @@ async def handle_limit_token_input(update: Update, context: ContextTypes.DEFAULT
                 parse_mode="HTML"
             )
     return False
+
+
+async def handle_limit_price_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.text and update.message.text.startswith("/"):
+        command = update.message.text.split()[0].lower()
+        if command == "/setlimitprice":
+            args = update.message.text.split()[1:]
+            if len(args) >= 2:
+                token_address = args[0]
+                limit_price = float(args[1])
+                # Logic to set limit price
+                await update.message.reply_text(
+                    f"✅ <b>Limit Price Set</b>\n\n"
+                    f"Token: {token_address}\n"
+                    f"Limit Price: {limit_price:.6f} SOL",
+                    parse_mode="HTML"
+                )
+            else:
+                await update.message.reply_text(
+                    "❌ Usage: /setlimitprice <token_address> <limit_price>",
+                    parse_mode="HTML"
+                )
+        else:
+            await update.message.reply_text(
+                "Unknown command. Use /setlimitprice <token_address> <limit_price>",
+                parse_mode="HTML"
+            )
+    return False
