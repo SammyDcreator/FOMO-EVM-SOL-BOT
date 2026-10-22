@@ -573,6 +573,20 @@ async def positions_refresh(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await positions_menu(update, context)
 
 
+async def handle_custom_amount_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if context.user_data.get("awaiting_custom_amount"):
+        try:
+            amount = float(update.message.text.strip())
+            context.user_data["buy_amount"] = amount
+            context.user_data.pop("awaiting_custom_amount", None)
+            await show_buy_confirmation(update, context)
+            return True
+        except ValueError:
+            await update.message.reply_text("❌ Invalid amount")
+            return True
+    return False
+
+
 async def sell_by_address(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
