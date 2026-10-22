@@ -166,6 +166,20 @@ def get_settings_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(keyboard)
 
 
+def get_auto_sell_type_keyboard() -> InlineKeyboardMarkup:
+    keyboard = [
+        [
+            InlineKeyboardButton("🟢 Target", callback_data="autosell_type_target"),
+            InlineKeyboardButton("🟢 Stop Loss", callback_data="autosell_type_stop"),
+        ],
+        [
+            InlineKeyboardButton("🟢 Take Profit", callback_data="autosell_type_take"),
+            InlineKeyboardButton("🔙 Back", callback_data="menu_auto_sell"),
+        ]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+
 def get_connect_wallet_keyboard() -> InlineKeyboardMarkup:
     keyboard = [
         [

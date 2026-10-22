@@ -207,3 +207,33 @@ async def limit_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=get_limit_orders_keyboard(False),
         parse_mode="HTML"
     )
+
+
+async def handle_limit_token_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.text and update.message.text.startswith("/"):
+        command = update.message.text.split()[0].lower()
+        if command == "/setlimit":
+            args = update.message.text.split()[1:]
+            if len(args) >= 3:
+                token_address = args[0]
+                target_price = float(args[1])
+                amount = float(args[2])
+                # Logic to set limit order
+                await update.message.reply_text(
+                    f"✅ <b>Limit Order Set</b>\n\n"
+                    f"Token: {token_address}\n"
+                    f"Target Price: {target_price:.6f} SOL\n"
+                    f"Amount: {amount:.6f} SOL",
+                    parse_mode="HTML"
+                )
+            else:
+                await update.message.reply_text(
+                    "❌ Usage: /setlimit <token_address> <target_price> <amount>",
+                    parse_mode="HTML"
+                )
+        else:
+            await update.message.reply_text(
+                "Unknown command. Use /setlimit <token_address> <target_price> <amount>",
+                parse_mode="HTML"
+            )
+    return False
